@@ -33,17 +33,27 @@ jobs:
       - name: Preparar base de datos de prueba
         run: npm run db:init
       - name: Pruebas funcionales (CP01 a CP20)
-        run: npm test
+        run: |
+          set -o pipefail
+          npm test 2>&1 | tee resultado-pruebas.txt
       - name: Compilar la aplicación web
         run: npm run build --prefix client
       - name: Capturas de pantalla (celular)
         run: |
+          set -o pipefail
           npm install --no-save playwright@1.48.2
           npx playwright install --with-deps chromium
           (PORT=3000 npm start > servidor.log 2>&1 &)
           npx --yes wait-on@8 http://localhost:3000/api/salud
           npm run db:init
-          node scripts/capturas.mjs
+          node scripts/capturas.mjs 2>&1 | tee capturas-salida.txt
+      - name: Resumen de fallas
+        if: failure()
+        run: |
+          for f in resultado-pruebas.txt capturas-salida.txt servidor.log; do
+            [ -f "$f" ] || continue
+            grep -v '^\s*$' "$f" | tail -c 60000 | sed ':a;N;$!ba;s/%/%25/g;s/\r/%0D/g;s/\n/%0A/g' | sed "s/^/::error title=$f::/"
+          done
       - uses: actions/upload-artifact@v4
         if: always()
         with:
