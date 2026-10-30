@@ -15,7 +15,8 @@ router.get('/servicios', ruta(async (req, res) => {
     `SELECT s.id, s.nombre, s.tipo, s.direccion, s.horario, s.telefono, s.requisitos,
             s.vereda_id, v.nombre AS vereda, s.actualizado_en
      FROM servicios s LEFT JOIN veredas v ON v.id = s.vereda_id
-     WHERE s.activo ORDER BY s.tipo, s.nombre`);
+     WHERE s.activo
+     ORDER BY CASE s.tipo WHEN 'hospital' THEN 1 WHEN 'puesto_salud' THEN 2 WHEN 'brigada' THEN 3 ELSE 4 END, s.nombre`);
   res.json(rows);
 }));
 
