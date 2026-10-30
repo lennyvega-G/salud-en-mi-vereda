@@ -132,10 +132,10 @@ router.get('/reportes', permitir('admin'), ruta(async (req, res) => {
               (SELECT COUNT(*)::int FROM usuarios WHERE rol = 'usuario') AS usuarios,
               (SELECT COUNT(*)::int FROM solicitudes) AS solicitudes,
               (SELECT COUNT(*)::int FROM solicitudes WHERE registrada_por <> usuario_id) AS asistidas,
-              (SELECT ROUND(AVG(EXTRACT(EPOCH FROM (m.primera - s.creado_en)) / 3600)::numeric, 1)
-                 FROM solicitudes s JOIN (SELECT solicitud_id, MIN(creado_en) AS primera FROM mensajes m
-                 JOIN usuarios a ON a.id = m.autor_id WHERE a.rol = 'profesional' GROUP BY solicitud_id) m
-                 ON m.solicitud_id = s.id) AS horas_primera_respuesta`),
+              (SELECT ROUND(AVG(EXTRACT(EPOCH FROM (r.primera - s.creado_en)) / 3600)::numeric, 1)
+                 FROM solicitudes s JOIN (SELECT m.solicitud_id, MIN(m.creado_en) AS primera FROM mensajes m
+                 JOIN usuarios a ON a.id = m.autor_id WHERE a.rol = 'profesional' GROUP BY m.solicitud_id) r
+                 ON r.solicitud_id = s.id) AS horas_primera_respuesta`),
   ]);
   res.json({ totales: totales.rows[0], porEstado: porEstado.rows, porTipo: porTipo.rows, porVereda: porVereda.rows });
 }));
