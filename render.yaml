@@ -1,0 +1,29 @@
+# Despliegue en Render (plan gratuito): un servicio web Node.js y una base de datos PostgreSQL
+services:
+  - type: web
+    name: salud-en-mi-vereda
+    runtime: node
+    plan: free
+    buildCommand: npm run build
+    startCommand: npm run db:preparar && npm start
+    healthCheckPath: /api/salud
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: NODE_VERSION
+        value: 20
+      - key: DATABASE_URL
+        fromDatabase:
+          name: salud-vereda-db
+          property: connectionString
+      - key: DATABASE_SSL
+        value: "true"
+      - key: JWT_SECRET
+        generateValue: true
+      - key: DATA_KEY
+        generateValue: true
+
+databases:
+  - name: salud-vereda-db
+    plan: free
+    databaseName: salud_vereda

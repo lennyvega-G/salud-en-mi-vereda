@@ -1,0 +1,24 @@
+{
+  "name": "salud-en-mi-vereda-server",
+  "version": "1.0.0",
+  "description": "API REST del prototipo Salud en mi Vereda (Proyecto de Grado UNAD)",
+  "main": "src/index.js",
+  "type": "commonjs",
+  "scripts": {
+    "start": "node src/index.js",
+    "dev": "node --watch src/index.js",
+    "db:init": "node db/init.js --reset",
+    "db:preparar": "node db/init.js",
+    "test": "node --test --test-concurrency=1 test/"
+  },
+  "engines": {
+    "node": ">=20"
+  },
+  "dependencies": {
+    "bcryptjs": "^2.4.3",
+    "dotenv": "^16.4.5",
+    "express": "^4.21.2",
+    "jsonwebtoken": "^9.0.2",
+    "pg": "^8.13.1"
+  }
+}
