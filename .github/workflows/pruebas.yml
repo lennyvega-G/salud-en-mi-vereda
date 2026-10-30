@@ -5,6 +5,9 @@ on:
   pull_request:
   workflow_dispatch:
 
+permissions:
+  contents: write
+
 jobs:
   api:
     name: Pruebas de la API y compilación
@@ -54,6 +57,17 @@ jobs:
             [ -f "$f" ] || continue
             grep -v '^\s*$' "$f" | tail -c 60000 | sed ':a;N;$!ba;s/%/%25/g;s/\r/%0D/g;s/\n/%0A/g' | sed "s/^/::error title=$f::/"
           done
+      - name: Publicar capturas en la rama "capturas"
+        if: success() && github.ref == 'refs/heads/main'
+        run: |
+          cp resultado-pruebas.txt capturas/
+          cd capturas
+          git init -q -b capturas
+          git config user.name "github-actions"
+          git config user.email "github-actions@users.noreply.github.com"
+          git add -A
+          git commit -q -m "Capturas y resultados de la ejecución ${{ github.run_number }}"
+          git push -q -f "https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}.git" capturas
       - uses: actions/upload-artifact@v4
         if: always()
         with:
