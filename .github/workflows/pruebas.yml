@@ -50,6 +50,21 @@ jobs:
           npx --yes wait-on@8 http://localhost:3000/api/salud
           npm run db:init
           node scripts/capturas.mjs 2>&1 | tee capturas-salida.txt
+      - name: Accesibilidad y rendimiento (Lighthouse, perfil celular)
+        run: |
+          export CHROME_PATH=$(node -e "console.log(require('playwright').chromium.executablePath())")
+          npx --yes lighthouse@12.2.1 http://localhost:3000 --form-factor=mobile --screenEmulation.mobile \
+            --only-categories=performance,accessibility,best-practices,seo \
+            --output=json --output=html --output-path=capturas/lighthouse \
+            --chrome-flags="--headless=new --no-sandbox" --quiet
+          node -e "const r=require('./capturas/lighthouse.report.json');const c=r.categories;const a=r.audits;const t=['Lighthouse (celular, red 4G lenta simulada):',...Object.values(c).map(x=>'  '+x.title+': '+Math.round(x.score*100)),'  First Contentful Paint: '+a['first-contentful-paint'].displayValue,'  Largest Contentful Paint: '+a['largest-contentful-paint'].displayValue,'  Peso total: '+a['total-byte-weight'].displayValue].join('\n');console.log(t);require('fs').appendFileSync('capturas/resultados.txt',t+'\n')"
+      - name: Escaneo de seguridad (OWASP ZAP baseline)
+        run: |
+          mkdir -p zap && chmod 777 zap
+          docker run --rm --network host -v "$PWD/zap:/zap/wrk:rw" ghcr.io/zaproxy/zaproxy:stable \
+            zap-baseline.py -t http://localhost:3000 -r zap-informe.html -w zap-informe.md -J zap-informe.json -I || true
+          cp zap/zap-informe.* capturas/ || true
+          node -e "const r=require('./zap/zap-informe.json');const al=r.site.flatMap(s=>s.alerts);const n={'3':0,'2':0,'1':0,'0':0};al.forEach(a=>n[a.riskcode]++);const t=['OWASP ZAP baseline: alto='+n['3']+', medio='+n['2']+', bajo='+n['1']+', informativo='+n['0'],...al.map(a=>'  ['+a.riskdesc+'] '+a.name)].join('\n');console.log(t);require('fs').appendFileSync('capturas/resultados.txt',t+'\n')"
       - name: Resumen de fallas
         if: failure()
         run: |
