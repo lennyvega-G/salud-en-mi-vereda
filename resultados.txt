@@ -1,0 +1,14 @@
+Carga inicial: 181 KB en 2.6 s con red 3G simulada (750 kbps, 300 ms)
+Sin conexión: la solicitud quedó en la cola del teléfono
+Al volver la señal la solicitud se envió sola
+Lighthouse (celular, red 4G lenta simulada):
+  Performance: 98
+  Accessibility: 100
+  Best Practices: 100
+  SEO: 91
+  First Contentful Paint: 1.9 s
+  Largest Contentful Paint: 1.9 s
+  Peso total: Total size was 186 KiB
+OWASP ZAP baseline: alto=0, medio=0, bajo=0, informativo=2
+  [Informational (Medium)] Modern Web Application
+  [Informational (Medium)] Storable but Non-Cacheable Content

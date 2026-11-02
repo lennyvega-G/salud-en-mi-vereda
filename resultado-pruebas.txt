@@ -1,0 +1,118 @@
+
+> salud-en-mi-vereda@1.0.0 test
+> npm test --prefix server
+
+
+> salud-en-mi-vereda-server@1.0.0 test
+> node --test --test-concurrency=1 test/
+
+TAP version 13
+# Subtest: CP01 - el registro exige aceptar la política de datos
+ok 1 - CP01 - el registro exige aceptar la política de datos
+  ---
+  duration_ms: 384.912344
+  ...
+# Subtest: CP02 - registro con consentimiento crea la cuenta y guarda la autorización
+ok 2 - CP02 - registro con consentimiento crea la cuenta y guarda la autorización
+  ---
+  duration_ms: 81.820049
+  ...
+# Subtest: CP03 - la contraseña se guarda cifrada con bcrypt
+ok 3 - CP03 - la contraseña se guarda cifrada con bcrypt
+  ---
+  duration_ms: 1.510186
+  ...
+# Subtest: CP04 - inicio de sesión con contraseña incorrecta es rechazado
+ok 4 - CP04 - inicio de sesión con contraseña incorrecta es rechazado
+  ---
+  duration_ms: 74.096184
+  ...
+# Subtest: CP05 - las rutas privadas exigen sesión
+ok 5 - CP05 - las rutas privadas exigen sesión
+  ---
+  duration_ms: 3.114399
+  ...
+# Subtest: CP06 - el directorio y los contenidos son públicos para guardarse sin conexión
+ok 6 - CP06 - el directorio y los contenidos son públicos para guardarse sin conexión
+  ---
+  duration_ms: 7.090128
+  ...
+# Subtest: CP07 - el usuario crea una solicitud y el texto queda cifrado en la base de datos
+ok 7 - CP07 - el usuario crea una solicitud y el texto queda cifrado en la base de datos
+  ---
+  duration_ms: 7.467507
+  ...
+# Subtest: CP08 - reenviar la misma solicitud desde la cola sin conexión no la duplica
+ok 8 - CP08 - reenviar la misma solicitud desde la cola sin conexión no la duplica
+  ---
+  duration_ms: 4.401501
+  ...
+# Subtest: CP09 - otra persona no puede ver la solicitud
+ok 9 - CP09 - otra persona no puede ver la solicitud
+  ---
+  duration_ms: 80.513961
+  ...
+# Subtest: CP10 - el administrador no puede leer el contenido de las solicitudes
+ok 10 - CP10 - el administrador no puede leer el contenido de las solicitudes
+  ---
+  duration_ms: 4.287921
+  ...
+# Subtest: CP11 - el profesional responde y la solicitud pasa a "respondida"
+ok 11 - CP11 - el profesional responde y la solicitud pasa a "respondida"
+  ---
+  duration_ms: 16.496301
+  ...
+# Subtest: CP12 - el usuario recibe el aviso de respuesta nueva y lo marca como leído
+ok 12 - CP12 - el usuario recibe el aviso de respuesta nueva y lo marca como leído
+  ---
+  duration_ms: 11.841247
+  ...
+# Subtest: CP13 - el profesional cierra la solicitud y ya no recibe mensajes
+ok 13 - CP13 - el profesional cierra la solicitud y ya no recibe mensajes
+  ---
+  duration_ms: 8.424626
+  ...
+# Subtest: CP14 - el gestor registra a una persona y le crea una solicitud (registro asistido)
+ok 14 - CP14 - el gestor registra a una persona y le crea una solicitud (registro asistido)
+  ---
+  duration_ms: 84.283313
+  ...
+# Subtest: CP15 - un usuario común no puede entrar a la administración
+ok 15 - CP15 - un usuario común no puede entrar a la administración
+  ---
+  duration_ms: 2.721735
+  ...
+# Subtest: CP16 - las acciones quedan en la auditoría y los reportes no exponen datos personales
+ok 16 - CP16 - las acciones quedan en la auditoría y los reportes no exponen datos personales
+  ---
+  duration_ms: 16.508891
+  ...
+# Subtest: CP17 - el administrador agrega un servicio al directorio
+ok 17 - CP17 - el administrador agrega un servicio al directorio
+  ---
+  duration_ms: 4.640894
+  ...
+# Subtest: CP18 - la API envía cabeceras de seguridad
+ok 18 - CP18 - la API envía cabeceras de seguridad
+  ---
+  duration_ms: 1.494409
+  ...
+# Subtest: CP19 - datos inválidos devuelven un mensaje claro
+ok 19 - CP19 - datos inválidos devuelven un mensaje claro
+  ---
+  duration_ms: 3.011653
+  ...
+# Subtest: CP20 - se bloquean los intentos repetidos de inicio de sesión
+ok 20 - CP20 - se bloquean los intentos repetidos de inicio de sesión
+  ---
+  duration_ms: 19.917896
+  ...
+1..20
+# tests 20
+# suites 0
+# pass 20
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 962.532487
